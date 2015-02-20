@@ -1,0 +1,166 @@
+//
+//  Copyright (c) 2014 VK.com
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy of
+//  this software and associated documentation files (the "Software"), to deal in
+//  the Software without restriction, including without limitation the rights to
+//  use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+//  the Software, and to permit persons to whom the Software is furnished to do so,
+//  subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+//  FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+//  COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+//  IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+//  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+
+package com.vk.sdk.api.model {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+/**
+ * A place object describes a location.
+ */
+public class VKApiPlace extends VKApiModel implements Parcelable, Identifiable {
+
+    /**
+     * Location ID.
+     */
+    public var id:int;
+
+    /**
+     * Location title.
+     */
+    public var title:String;
+
+    /**
+     * Geographical latitude, in degrees (from -90 to 90).
+     */
+    public var latitude:Number;
+
+    /**
+     * Geographical longitude, in degrees (from -180 to 180)
+     */
+    public var longitude:Number;
+
+    /**
+     * Date (in Unix time) when the location was added
+     */
+    public var created:Number;
+
+    /**
+     * Numbers of checkins in this place
+     */
+    public var checkins:int;
+
+    /**
+     * Date (in Unix time) when the location was last time updated
+     */
+    public var updated:Number;
+
+    /**
+     * ID of the country the place is located in, positive number
+     */
+    public var country_id:int;
+
+    /**
+     * ID of the city the place is located in, positive number
+     */
+    public var city_id:int;
+
+    /**
+     * Location address.
+     */
+    public var address:String;
+
+	public function VKApiPlace(from:JSONObject) {
+		parse(from);
+	}
+    /**
+     * Fills a Place instance from JSONObject.
+     */
+    public function parse(from:JSONObject):VKApiPlace {
+        id = from.optInt("id");
+        title = from.optString("title");
+        latitude = from.optDouble("latitude");
+        longitude = from.optDouble("longitude");
+        created = from.optLong("created");
+        checkins = from.optInt("checkins");
+        updated = from.optLong("updated");
+        country_id = from.optInt("country");
+        city_id = from.optInt("city");
+        address = from.optString("address");
+        return this;
+    }
+
+    /**
+     * Creates a Place instance from Parcel.
+     */
+    public function VKApiPlace(in:Parcel) {
+        this.id = in.readInt();
+        this.title = in.readString();
+        this.latitude = in.readDouble();
+        this.longitude = in.readDouble();
+        this.created = in.readLong();
+        this.checkins = in.readInt();
+        this.updated = in.readLong();
+        this.country_id = in.readInt();
+        this.city_id = in.readInt();
+        this.address = in.readString();
+    }
+
+    /**
+     * Creates empty Place instance.
+     */
+    public function VKApiPlace() {
+
+    }
+
+    
+override public function getId():int {
+        return id;
+    }
+
+    
+override public function describeContents():int {
+        return 0;
+    }
+
+    
+override public function writeToParcel(dest:Parcel, flags:int):void {
+        dest.writeInt(this.id);
+        dest.writeString(this.title);
+        dest.writeDouble(this.latitude);
+        dest.writeDouble(this.longitude);
+        dest.writeLong(this.created);
+        dest.writeInt(this.checkins);
+        dest.writeLong(this.updated);
+        dest.writeInt(this.country_id);
+        dest.writeInt(this.city_id);
+        dest.writeString(address);
+    }
+
+    
+override public function toString():String {
+        return address;
+    }
+
+    public static Creator<VKApiPlace> CREATOR = new Creator<VKApiPlace>() {
+        public function createFromParcel(source:Parcel):VKApiPlace {
+            return new VKApiPlace(source);
+        }
+
+        public VKApiPlace[] newArray(var size:int) {
+            return new VKApiPlace[size];
+        }
+    };
+}
+}
